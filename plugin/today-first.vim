@@ -15,7 +15,7 @@ let g:today_first_plugindir = expand('<sfile>:p:h:h').'/'
 let g:today_first_templatedir = g:today_first_plugindir.'template/'
 
 if !exists("g:today_first_cmd_file")
-    let g:today_first_cmd_file = 'today_first_cmd'
+    let g:today_first_cmd_file = 'today_first_cmd.vim'
 endif
 if !exists("g:today_first_execute_datetime_file")
     let g:today_first_execute_datetime_file = 'execute_datetime'
@@ -34,15 +34,26 @@ function! TodayFirstCmd()
     let before = readfile(g:today_first_dir.g:today_first_execute_datetime_file)[0]
 
     if today > before
-        echo 'todaycmd'
-        exec 'source '.g:today_first_dir.g:today_first_cmd_file
-        call writefile([today], g:today_first_dir.g:today_first_execute_datetime_file, 'b')
+        call ExecuteTodayFirstCmd()
     else
         echo 'already execute: today-first'
     endif
     return ''
 endfunction
 
+function! ExecuteTodayFirstCmd()
+    let today = strftime("%Y%m%d", localtime())
+
+    exec 'source '.g:today_first_dir.g:today_first_cmd_file
+    call writefile([today], g:today_first_dir.g:today_first_execute_datetime_file, 'b')
+endfunction
+
+function! EditTodayFirstCmd()
+    exec 'e '.g:today_first_dir.g:today_first_cmd_file
+endfunction
+
 command! TodayFirstCmd call TodayFirstCmd()
+command! ExecuteTodayFirstCmd call ExecuteTodayFirstCmd()
+command! EditTodayFirstCmd call EditTodayFirstCmd()
 
 let &cpo = s:save_cpo
