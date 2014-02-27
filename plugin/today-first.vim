@@ -40,9 +40,6 @@ function! TodayFirstCmd()
 
         cgetexpr @a
         copen
-    else
-        cgetexpr 'already execute: today-first'
-        copen
     endif
     return ''
 endfunction
