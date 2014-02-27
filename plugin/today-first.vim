@@ -34,9 +34,15 @@ function! TodayFirstCmd()
     let before = readfile(g:today_first_dir.g:today_first_execute_datetime_file)[0]
 
     if today > before
-        call ExecuteTodayFirstCmd()
+        redir @a
+        silent call ExecuteTodayFirstCmd()
+        redir END
+
+        cgetexpr @a
+        copen
     else
-        echo 'already execute: today-first'
+        cgetexpr 'already execute: today-first'
+        copen
     endif
     return ''
 endfunction
