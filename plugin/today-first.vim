@@ -34,13 +34,25 @@ function! TodayFirstCmd()
     let before = readfile(g:today_first_dir.g:today_first_execute_datetime_file)[0]
 
     if today > before
-        redir @a
-        silent call ExecuteTodayFirstCmd()
-        redir END
-
-        cgetexpr @a
+        cgetexpr 'execute today-first-command...'
         copen
+
+        call g:thread("ruby -e \" sleep 100ms; \"", function("TodayFirstCmdCore"))
     endif
+    return ''
+endfunction
+
+function! TodayFirstCmdCore(...)
+    redir @a
+    silent call ExecuteTodayFirstCmd()
+    redir END
+
+    cclose
+    cgetexpr @a
+    copen
+
+    call TodaySetBuf()
+
     return ''
 endfunction
 

@@ -2,9 +2,10 @@
 
 1日一回、Vimの起動時に実行したいコマンドを登録できるプラグインです。
 
-vimrcに以下を追加してください
-
+vimrcに以下を追加してください。
+* 別途、NeoBundle、vimprocが必要になります。
 ```
+NeoBundle 'AtsushiM/thread.vim'
 NeoBundle 'AtsushiM/today-first.vim'
 autocmd VimEnter * TodayFirstCmd
 ```
