@@ -51,8 +51,6 @@ function! TodayFirstCmdCore(...)
     cgetexpr @a
     copen
 
-    call TodaySetBuf()
-
     return ''
 endfunction
 
