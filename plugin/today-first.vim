@@ -29,44 +29,8 @@ if !isdirectory(g:today_first_dir)
     call system('cp '.g:today_first_templatedir.'* '.g:today_first_dir)
 endif
 
-function! TodayFirstCmd()
-    let today = strftime("%Y%m%d", localtime())
-    let before = readfile(g:today_first_dir.g:today_first_execute_datetime_file)[0]
-
-    if today > before
-        cgetexpr 'execute today-first-command...'
-        copen
-
-        call g:thread("ruby -e \" sleep 100ms; \"", function("TodayFirstCmdCore"))
-    endif
-    return ''
-endfunction
-
-function! TodayFirstCmdCore(...)
-    redir @a
-    silent call ExecuteTodayFirstCmd()
-    redir END
-
-    cclose
-    cgetexpr @a
-    copen
-
-    return ''
-endfunction
-
-function! ExecuteTodayFirstCmd()
-    let today = strftime("%Y%m%d", localtime())
-
-    exec 'source '.g:today_first_dir.g:today_first_cmd_file
-    call writefile([today], g:today_first_dir.g:today_first_execute_datetime_file, 'b')
-endfunction
-
-function! EditTodayFirstCmd()
-    exec 'e '.g:today_first_dir.g:today_first_cmd_file
-endfunction
-
-command! TodayFirstCmd call TodayFirstCmd()
-command! ExecuteTodayFirstCmd call ExecuteTodayFirstCmd()
-command! EditTodayFirstCmd call EditTodayFirstCmd()
+command! TodayFirstCmd call todayfirst#cmd()
+command! ExecuteTodayFirstCmd call todayfirst#execute()
+command! EditTodayFirstCmd call todayfirst#edit()
 
 let &cpo = s:save_cpo
